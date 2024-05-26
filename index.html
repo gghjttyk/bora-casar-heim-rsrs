@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposta de Casamento</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: pink;
+            font-family: Arial, sans-serif;
+            overflow: hidden; /* Impede a barra de rolagem */
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 30vh;
+            position: relative;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: white;
+            background-color: #ff69b4;
+            margin: 0 10px;
+            position: relative;
+        }
+
+        .yes {
+            background-color: #ff69b4;
+        }
+
+        .no {
+            background-color: #ff7f7f;
+        }
+
+        .button.no {
+            transition: none;
+        }
+    </style>
+    <script>
+        var buttonInterval; // Variável para armazenar o intervalo de atualização do botão
+
+        function moveButton() {
+            var button = document.getElementById('no-button');
+            var newX = Math.random() * (window.innerWidth - button.offsetWidth);
+            var newY = Math.random() * (window.innerHeight - button.offsetHeight);
+            newX = Math.max(0, Math.min(newX, window.innerWidth - button.offsetWidth)); // Limitando a posição horizontal para não ultrapassar a tela
+            newY = Math.max(0, Math.min(newY, window.innerHeight - button.offsetHeight)); // Limitando a posição vertical para não ultrapassar a tela
+            
+            // Atraso entre as atualizações de posição para reduzir a velocidade do movimento
+            var delay = 10; // 10 milissegundos
+            var stepX = (newX - button.offsetLeft) / delay;
+            var stepY = (newY - button.offsetTop) / delay;
+            
+            clearInterval(buttonInterval); // Limpa o intervalo anterior
+            buttonInterval = setInterval(() => { // Atualiza a posição do botão gradualmente
+                if ((button.offsetLeft <= 0 && stepX < 0) || (button.offsetLeft >= window.innerWidth - button.offsetWidth && stepX > 0)) {
+                    stepX *= -1; // Inverte a direção horizontal quando atinge os limites da tela
+                }
+                if ((button.offsetTop <= 0 && stepY < 0) || (button.offsetTop >= window.innerHeight - button.offsetHeight && stepY > 0)) {
+                    stepY *= -1; // Inverte a direção vertical quando atinge os limites da tela
+                }
+                button.style.left = (button.offsetLeft + stepX) + 'px';
+                button.style.top = (button.offsetTop + stepY) + 'px';
+            }, delay);
+
+            var messages = ["Nem tenta😡", "Tu para😭"];
+            var messageIndex = Math.floor(Math.random() * messages.length);
+            button.innerText = messages[messageIndex];
+            setTimeout(() => {
+                button.innerText = 'Não'; // Voltar ao texto original após 1 segundo
+            }, 1000);
+            return false; // Importante para evitar o comportamento padrão da tag âncora
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: black;">ACEITA CASAR COMIGO, JÚLIA?</h1>
+        <div class="buttons">
+            <a href="congratulations.html" class="button yes">Sim</a>
+            <a href="#" id="no-button" class="button no" onmousedown="return moveButton()">Não</a>
+        </div>
+    </div>
+</body>
+</html>
